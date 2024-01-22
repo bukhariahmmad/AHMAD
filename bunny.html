@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Go Out With Me?</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f7ede2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      color: #4a4a4a;
+    }
+
+    h1 {
+      color: #e44d26;
+    }
+
+    #sweetNote {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background-color 0.3s;
+    }
+
+    #yesButton {
+      background-color: #e44d26;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #noButton {
+      background-color: #8b0000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      filter: brightness(1.2);
+    }
+
+    button:disabled {
+      filter: grayscale(80%);
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>My Dearest MOMO,</h1>
+    <p id="sweetNote">You are the light of my life, and every moment with you is a treasure. Your smile brightens my darkest days, and your presence fills my heart with joy.</p>
+    <p>Would you honor me with your presence on Thursday morning? I'd love to share a delightful breakfast together and start our day with joy.</p>
+    <button id="yesButton" onclick="submitResponse('yes')">Yes, I'd love to!</button>
+    <button id="noButton" onclick="submitResponse('no')">No, I can't</button>
+  </div>
+
+  <script>
+    function submitResponse(response) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'submit_response.php', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+        }
+      };
+      xhr.send('response=' + encodeURIComponent(response));
+
+      var sweetNoteElement = document.getElementById('sweetNote');
+      var messageElement = document.createElement('p');
+
+      if (response === 'yes') {
+        messageElement.innerHTML = "Fantastic! I can't wait for our magical morning together on Thursday!";
+      } else {
+        messageElement.innerHTML = "Oh, I understand. If you change your mind, let me know.";
+      }
+
+      sweetNoteElement.parentNode.replaceChild(messageElement, sweetNoteElement);
+
+      document.getElementById('yesButton').disabled = true;
+      document.getElementById('noButton').disabled = true;
+    }
+  </script>
+</body>
+</html>
